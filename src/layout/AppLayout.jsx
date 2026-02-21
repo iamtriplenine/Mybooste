@@ -30,12 +30,7 @@ export default function AppLayout() {
       alt: "Bannière 2",
     },
 
-    {
-      id: "4",
-      imageUrl: "https://i.postimg.cc/j2b1R1vT/IMG_1680.jpg",
-      href: "https://TON-LIEN-EXTERNE-2.com",
-      alt: "Bannière 2",
-    },
+    
   ];
 
   return (
