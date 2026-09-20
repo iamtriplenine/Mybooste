@@ -101,6 +101,30 @@ export const PRODUCTS = [
     price: 3200,
     file: null,
   },
+
+
+
+
+  {
+  id: "PRD-0009",
+  title: "Père riche père pauvre",
+  description:
+    " une histoire de la vie de Robert Kiyosaki et de sa vision de l’argent, de l’investissement et de la liberté financière.",
+  section: "pdf",
+  type: "pdf",
+  contentType: "pdf",
+  icon: "file",
+  coverImage: "https://i.postimg.cc/FzHXpCpK/Robert-kiyosaki.jpg",
+  access: "free",
+  price: 0,
+  file: "https://pub-55eaae7913604e07813a54167d4fd57d.r2.dev/products/PRD-0009/F003001.pdf",
+  format: "tall",
+},
+
+
+
+
+
 ];
 
 export function findProductById(id) {

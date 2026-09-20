@@ -40,9 +40,13 @@ export const USERS = [
     activity: 5,
     days: 2,
 
-    ownedProducts: ["PRD-0002", "PRD-0005"],
+    ownedProducts: [
+      "",
+      "PRD-0004",
+      "PRD-0008",
+    ],
 
-    
+
     joinedAt: "20 septembre 2026",
     week: [
       { day: "Lun", date: 19, active: true },

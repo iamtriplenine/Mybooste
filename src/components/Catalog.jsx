@@ -73,11 +73,23 @@ export default function Catalog({ user }) {
 
           return (
             <Link
-  className={`product-card product-${format} liquid-glass`}
+  className={`product-card product-${format} liquid-glass ${
+    product.coverImage ? "product-has-cover" : ""
+  }`}
   key={product.id}
   to={`/produit/${product.id}`}
 >
-              <div className="product-card-glow" />
+              {product.coverImage ? (
+  <div
+    className="product-cover-image"
+    style={{
+      backgroundImage: `url("${product.coverImage}")`,
+    }}
+    aria-hidden="true"
+  />
+) : (
+  <div className="product-card-glow" />
+)}
 
               <div className="product-card-top">
                 <span className="product-type">
@@ -89,12 +101,14 @@ export default function Catalog({ user }) {
                 </span>
               </div>
 
-              <div className="product-icon">
-                <ProductIcon
-                  name={product.icon}
-                  size={format === "tall" ? 58 : 44}
-                />
-              </div>
+              {!product.coverImage && (
+  <div className="product-icon">
+    <ProductIcon
+      name={product.icon}
+      size={format === "tall" ? 58 : 44}
+    />
+  </div>
+)}
 
               <div className="product-information">
                 <h3>{product.title}</h3>

@@ -3,6 +3,11 @@ import { findProductById } from "../data/products";
 import ProductIcon from "./ProductIcon";
 import "../styles/product-page.css";
 
+import {
+  GUEST_USER,
+  findUserById,
+} from "../data/users";
+
 export default function ProductPage() {
   const { id } = useParams();
   const product = findProductById(id);
@@ -26,7 +31,19 @@ export default function ProductPage() {
     );
   }
 
-  const canAccess = product.access === "free";
+  const storedUserId =
+  window.localStorage.getItem("mybooste-profile-id");
+
+const user =
+  findUserById(storedUserId) ?? GUEST_USER;
+
+const owned =
+  user.ownedProducts?.includes(product.id) ?? false;
+
+const canView =
+  product.access === "free" || owned;
+
+const canDownload = owned;
 
   return (
     <div className="product-page">
@@ -43,9 +60,24 @@ export default function ProductPage() {
 
       <main className="product-page-container">
         <section className="product-detail-heading">
-          <div className="product-detail-icon liquid-glass">
-            <ProductIcon name={product.icon} size={46} />
-          </div>
+          
+
+
+          <div
+  className={`product-detail-icon liquid-glass ${
+    product.coverImage ? "product-detail-has-image" : ""
+  }`}
+>
+  {product.coverImage ? (
+    <img
+      src={product.coverImage}
+      alt=""
+      aria-hidden="true"
+    />
+  ) : (
+    <ProductIcon name={product.icon} size={46} />
+  )}
+</div>
 
           <div>
             <div className="product-detail-labels">
@@ -63,7 +95,7 @@ export default function ProductPage() {
           </div>
         </section>
 
-        {!canAccess && (
+        {!canView && (
           <section className="product-message liquid-glass">
             <h2>Accès nécessaire</h2>
             <p>
@@ -73,7 +105,7 @@ export default function ProductPage() {
           </section>
         )}
 
-        {canAccess && !product.file && (
+        {canView && !product.file && (
           <section className="product-message liquid-glass">
             <h2>Fichier bientôt disponible</h2>
             <p>
@@ -83,41 +115,26 @@ export default function ProductPage() {
           </section>
         )}
 
-        {canAccess &&
+        {canView &&
           product.file &&
           product.contentType === "pdf" && (
             <section className="product-content">
-              <div className="document-actions">
-                <a
-                  className="document-button secondary"
-                  href={product.file}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Ouvrir dans un nouvel onglet
-                </a>
-
-                <a
-                  className="document-button primary"
-                  href={product.file}
-                  download={product.downloadName}
-                >
-                  Télécharger
-                </a>
-              </div>
+              
 
               <div className="pdf-viewer liquid-glass">
                 <iframe
-                  src={`${product.file}#toolbar=1&navpanes=0`}
+                  src={`${product.file}#toolbar=${
+                  canDownload ? "1" : "0"
+                  }&navpanes=0&view=FitH`}
                   title={product.title}
                   loading="lazy"
                 />
               </div>
 
               <p className="pdf-fallback">
-                Si le lecteur ne s’affiche pas sur ton
-                appareil, utilise le bouton « Ouvrir dans
-                un nouvel onglet ».
+                 {canDownload
+                 ? "Ce produit est enregistré dans ton compte. Tu peux le consulter ou le télécharger."
+                 : "Ce document peut être consulté sur le site. Le téléchargement est réservé aux propriétaires."}
               </p>
             </section>
           )}
